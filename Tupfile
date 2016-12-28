@@ -1,0 +1,6 @@
+
+CFLAGS="-Wall -Wextra -Wuninitialized -O2 -flto"
+LDFLAGS="-Wl -flto"
+
+: foreach src/*.cpp src/solvers/*.cpp src/problems/*.cpp |> g++ $CFLAGS -c %f -o %o |> build/obj/%B.o
+: build/obj/*.o |> g++ $LDFLAGS %f -o %o |> build/Sudoku
