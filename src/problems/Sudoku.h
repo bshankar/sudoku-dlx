@@ -12,13 +12,12 @@ public:
     // fill the matrix
     Sudoku(ui n);
 
+    void fillMatrix();
+
     // printSolution function for this problem
     void printSolution(vector<node> nodes);
-    vector<ui> colnsToCover(string puzzle);
-    ui getRow(ui index, us value);
+    vector<ui> colnsToCover();
 
-private:
-    ui n, cells, digits;
 };
 
 

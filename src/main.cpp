@@ -1,4 +1,4 @@
-#include "problems/Sudoku.h"
+#include "problems/SudokuX.h"
 #include "solvers/Dlx.h"
 
 using namespace std;
@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     string puzzle = argv[1];
-    Sudoku sudoku(3);
-    Dlx dlx(&sudoku, puzzle);
+    SudokuX sudokux(3);
+    Dlx dlx(&sudokux, puzzle);
     dlx.solve();
 }

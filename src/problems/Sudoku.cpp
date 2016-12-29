@@ -1,14 +1,21 @@
 #include "Sudoku.h"
 #include <assert.h>
+#include <string.h>
 
 
-Sudoku::Sudoku(ui n)
-    : n(n), cells(n*n*n*n), digits(n*n) {
+Sudoku::Sudoku(ui n) {
+
+    this->n = n;
+    digits = n*n;
+    cells = digits*digits;
 
     int constraintSets = 4;
     rows = cells*digits;
     colns = constraintSets*cells;
+}
 
+
+void Sudoku::fillMatrix() {
     matrix.resize(rows, vector<bool>(colns));
 
     // construct the matrix for n^2xn^2 sudoku
@@ -30,19 +37,21 @@ Sudoku::Sudoku(ui n)
 
 void Sudoku::printSolution(vector<node> nodes) {
     int i = 0;
+    char sol[cells];
+    strcpy(sol, puzzle.c_str());
 
     while (nodes[i]) {
         char value = nodes[i]->name % digits + '1';
         int pos = nodes[i]->name / digits;
 
-        puzzle[pos] = value;
+        sol[pos] = value;
         ++i;
     }
-    cout << puzzle << endl;
+    cout << sol << endl;
 }
 
 
-vector<ui> Sudoku::colnsToCover(string puzzle) {
+vector<ui> Sudoku::colnsToCover() {
     assert(puzzle.size() == cells);
 
     vector<ui> ctc;
@@ -65,9 +74,4 @@ vector<ui> Sudoku::colnsToCover(string puzzle) {
         }
     }
     return ctc;
-}
-
-
-ui Sudoku::getRow(ui index, us value) {
-    return index*digits + value;
 }

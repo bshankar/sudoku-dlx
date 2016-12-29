@@ -50,7 +50,7 @@ public:
         }
     }
 
-    virtual vector<ui> colnsToCover(string puzzle) {
+    virtual vector<ui> colnsToCover() {
         vector<ui> v;
         return v;
     }
@@ -68,10 +68,15 @@ public:
         puzzle = p;
     }
 
+    ui getCells() {
+        return cells;
+    }
+
 protected:
     vvb matrix;
     int rows, colns;
     string puzzle;
+    ui n, cells, digits;
 };
 
 #endif /* end of include guard: PROBLEM_H */

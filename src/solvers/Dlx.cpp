@@ -2,14 +2,18 @@
 
 
 Dlx::Dlx(Problem *puzzle) {
-    Dlx(puzzle, "");
+    this->puzzle = puzzle;
+    puzzleInstance = "";
+    solution.resize(INFTY);
+    initLinks(puzzle->getMatrix());
+    puzzle->setPuzzle(puzzleInstance);
 }
 
 
 Dlx::Dlx(Problem *puzzle,
-         string puzzleInstance) : puzzleInstance(puzzleInstance) {
+         string puzzleInstance) : puzzle(puzzle),
+    puzzleInstance(puzzleInstance) {
 
-    this->puzzle = puzzle;
     solution.resize(INFTY);
     initLinks(puzzle->getMatrix());
     puzzle->setPuzzle(puzzleInstance);
@@ -204,12 +208,15 @@ void Dlx::uncoverColns(vector<ui> colns) {
 
 
 void Dlx::solve() {
-    // solve the puzzle
-    auto v = puzzle->colnsToCover(puzzleInstance);
 
-    coverColns(v);
-    search(0);
-    uncoverColns(v);
+    if (puzzleInstance.size() == puzzle->getCells()) {
+        // solve the puzzle
+        vector<ui> v = puzzle->colnsToCover();
+
+        coverColns(v);
+        search(0);
+        uncoverColns(v);
+    }
 }
 
 
