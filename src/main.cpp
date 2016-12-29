@@ -5,8 +5,14 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
-    string puzzle = argv[1];
+
     SudokuX sudokux(3);
-    Dlx dlx(&sudokux, puzzle);
-    dlx.solve();
+    if (argc == 2) {
+        string puzzle = argv[1];
+        Dlx dlx(&sudokux, puzzle);
+        dlx.solve();
+    } else {
+        Dlx dlx(&sudokux);
+        dlx.solve();
+    }
 }

@@ -11,9 +11,10 @@ Dlx::Dlx(Problem *puzzle) {
 
 
 Dlx::Dlx(Problem *puzzle,
-         string puzzleInstance) : puzzle(puzzle),
-    puzzleInstance(puzzleInstance) {
+         string puzzleInstance) {
 
+    this->puzzle = puzzle;
+    this->puzzleInstance = puzzleInstance;
     solution.resize(INFTY);
     initLinks(puzzle->getMatrix());
     puzzle->setPuzzle(puzzleInstance);
@@ -89,7 +90,11 @@ void Dlx::initLinks(const vvb& matrix) {
 
     // make rows circular
     for (ui i = 0; i < ROWS; ++i) {
-        node f_row = before[i]->left->left->left;
+        node f_row = before[i];
+
+        while (f_row->left)
+            f_row = f_row->left;
+
         before[i]->right = f_row;
         f_row->left = before[i];
     }
@@ -216,6 +221,9 @@ void Dlx::solve() {
         coverColns(v);
         search(0);
         uncoverColns(v);
+    } else {
+        cout << "Solving empty puzzle!" << endl;
+        search(0);
     }
 }
 

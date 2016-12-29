@@ -8,6 +8,7 @@
 class SudokuX : public Sudoku {
 public:
     SudokuX(ui n);
+    vector<ui> colnsToCover();
 };
 
 #endif /* end of include guard: SUDOKUX_H */

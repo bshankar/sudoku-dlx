@@ -4,7 +4,6 @@
 
 SudokuX::SudokuX(ui n) : Sudoku(n) {
     colns += 2*digits;
-    matrix.resize(rows, vector<bool>(colns));
 
     // fill with normal sudoku rules
     fillMatrix();
@@ -18,4 +17,22 @@ SudokuX::SudokuX(ui n) : Sudoku(n) {
             matrix[diagRow][4*cells + k] = 1;
             matrix[antiDiagRow][4*cells + digits + k] = 1;
         }
+}
+
+
+vector<ui> SudokuX::colnsToCover() {
+    vector<ui> v = Sudoku::colnsToCover();
+
+    // additional columns to cover
+    for (ui c = 0; c < digits; ++c) {
+        char diagCellValue = puzzle[c*(digits + 1)],
+             antiDiagCellValue = puzzle[(c + 1)*(digits - 1)];
+
+        if (!isEmptyCell(diagCellValue))
+            v.push_back(4*cells + diagCellValue - '1');
+
+        if (!isEmptyCell(antiDiagCellValue))
+            v.push_back(4*cells + digits +  antiDiagCellValue - '1');
+    }
+    return v;
 }

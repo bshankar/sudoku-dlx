@@ -1,5 +1,4 @@
 #include "Sudoku.h"
-#include <assert.h>
 #include <string.h>
 
 
@@ -52,12 +51,10 @@ void Sudoku::printSolution(vector<node> nodes) {
 
 
 vector<ui> Sudoku::colnsToCover() {
-    assert(puzzle.size() == cells);
-
     vector<ui> ctc;
     for (us cell = 0; cell < cells; ++cell) {
 
-        if (puzzle[cell] != '0' && puzzle[cell] != '.') {
+        if (!isEmptyCell(puzzle[cell])) {
             us d = puzzle[cell] - '1';
 
             // indices of covered colns
