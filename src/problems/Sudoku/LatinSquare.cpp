@@ -11,18 +11,13 @@ LatinSquare::LatinSquare(ui n) {
 }
 
 
-bool LatinSquare::get(ui i, ui j) {
+vector<ui> LatinSquare::getColns(ui i) {
     ui cell = i / digits,
        value = i % digits;
     ui row = cell / digits,
        coln = cell % digits;
 
-    if (j < cells)
-        return cell == j;
-    else if (j < 2*cells)
-        return row*digits + value + cells == j;
-    else
-        return coln*digits + value + 2*cells == j;
+    return {cell, row*digits + value + cells, coln*digits + value + 2*cells};
 }
 
 

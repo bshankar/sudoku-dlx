@@ -22,9 +22,9 @@ public:
 
     Problem() {}
 
-    virtual bool get(ui i, ui j) {
-        // get the value at matrix[i][j]
-        return true;
+    virtual vector<ui> getColns(ui i) {
+        // get all the columns that contain 1 in this row
+        return vector<ui>();
     }
 
     // dummy function to print the solution

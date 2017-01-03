@@ -43,30 +43,29 @@ void Dlx::initLinks() {
     vector<node> before(rows);
 
     for (ui i = 0; i < rows; ++i) {
-        for (ui j = 0; j < colns; ++j) {
-            if (prbm->get(i, j)) {
-                node tmpRow = new Link();
-                tmpRow->name = i;
-                tmpRow->coln = colnHeaders[j];
-                ++tmpRow->coln->size;
+        vector<ui> filledColns = prbm->getColns(i);
+        for (ui j: filledColns) {
+            node tmpRow = new Link();
+            tmpRow->name = i;
+            tmpRow->coln = colnHeaders[j];
+            ++tmpRow->coln->size;
 
-                // vertical links
-                if (above[j] == NULL) {
-                    colnHeaders[j]->down = tmpRow;
-                    tmpRow->up = colnHeaders[j];
-                } else {
-                    above[j]->down = tmpRow;
-                    tmpRow->up = above[j];
-                }
-                above[j] = tmpRow;
-
-                // horizontal links
-                if (before[i] != NULL) {
-                    before[i]->right = tmpRow;
-                    tmpRow->left = before[i];
-                }
-                before[i] = tmpRow;
+            // vertical links
+            if (above[j] == NULL) {
+                colnHeaders[j]->down = tmpRow;
+                tmpRow->up = colnHeaders[j];
+            } else {
+                above[j]->down = tmpRow;
+                tmpRow->up = above[j];
             }
+            above[j] = tmpRow;
+
+            // horizontal links
+            if (before[i] != NULL) {
+                before[i]->right = tmpRow;
+                tmpRow->left = before[i];
+            }
+            before[i] = tmpRow;
         }
     }
 
