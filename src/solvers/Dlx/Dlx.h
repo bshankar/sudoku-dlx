@@ -3,8 +3,6 @@
 
 #include "../../problems/Problem.h"
 
-#define INFTY 500000
-
 /* Dancing links solver */
 
 

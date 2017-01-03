@@ -3,7 +3,8 @@
 
 Dlx::Dlx(Problem *prbm, string puzzle) : prbm(prbm),
     puzzle(puzzle) {
-    solution.resize(INFTY);
+
+    solution.resize(3*prbm->getRows());
     initLinks();
     prbm->setPuzzle(puzzle);
 }
