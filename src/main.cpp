@@ -1,18 +1,11 @@
-#include "problems/SudokuX.h"
-#include "solvers/Dlx.h"
+#include "problems/Sudoku/LatinSquare.h"
+#include "solvers/Dlx/Dlx.h"
 
 using namespace std;
 
 
 int main(int argc, char* argv[]) {
-
-    SudokuX sudokux(6);
-    if (argc == 2) {
-        string puzzle = argv[1];
-        Dlx dlx(&sudokux, puzzle);
-        dlx.solve();
-    } else {
-        Dlx dlx(&sudokux);
-        dlx.solve();
-    }
+    LatinSquare ls(9);
+    Dlx solver(&ls);
+    solver.solve();
 }

@@ -1,7 +1,7 @@
 #ifndef DLX_H
 #define DLX_H
 
-#include "../problems/Problem.h"
+#include "../../problems/Problem.h"
 
 #define INFTY 500000
 
@@ -10,9 +10,9 @@
 
 class Dlx {
 public:
-    Dlx(Problem *puzzle);
-    Dlx(Problem *puzzle, string puzzleInstance);
-    void initLinks(const vvb& matrix);
+    Dlx(Problem *prb);
+    Dlx(Problem *prb, string puzzle);
+    void initLinks();
     ~Dlx();
 
     node chooseColn();
@@ -23,15 +23,15 @@ public:
 
     void coverColns(vector<ui> colns);
     void uncoverColns(vector<ui> colns);
-    ui prepare(vector<ui> v, string puzzleInstance);
+    ui prepare(vector<ui> v, string puzzle);
     void reset(vector<ui> v);
     void solve();
 
     node getRoot();
 private:
-    Problem *puzzle;
+    Problem *prbm;
 
-    string puzzleInstance;
+    string puzzle;
     int solutions = 0;
     vector<node> solution;
     node root;

@@ -1,34 +1,33 @@
 #include "Dlx.h"
 
 
-Dlx::Dlx(Problem *puzzle) {
-    this->puzzle = puzzle;
-    puzzleInstance = "";
+Dlx::Dlx(Problem *prbm) {
+    this->prbm = prbm;
+    this->puzzle = "";
     solution.resize(INFTY);
-    initLinks(puzzle->getMatrix());
-    puzzle->setPuzzle(puzzleInstance);
+    initLinks();
+    prbm->setPuzzle(puzzle);
 }
 
 
-Dlx::Dlx(Problem *puzzle,
-         string puzzleInstance) {
+Dlx::Dlx(Problem *prbm, string puzzle) {
 
+    this->prbm = prbm;
     this->puzzle = puzzle;
-    this->puzzleInstance = puzzleInstance;
     solution.resize(INFTY);
-    initLinks(puzzle->getMatrix());
-    puzzle->setPuzzle(puzzleInstance);
+    initLinks();
+    prbm->setPuzzle(puzzle);
 }
 
 
-void Dlx::initLinks(const vvb& matrix) {
+void Dlx::initLinks() {
     // Create the data structure for the Dlx algorithm
-    root      = new link();
-    node thisHead = new link();
+    root  = new Link();
+    node thisHead = new Link();
 
-    const ui ROWS = matrix.size();
-    const ui COLNS = matrix[0].size();
-    colnHeaders.resize(COLNS);
+    const ui rows = prbm->getRows();
+    const ui colns = prbm->getColns();
+    colnHeaders.resize(colns);
 
     root->right = thisHead;
     thisHead->left = root;
@@ -37,8 +36,8 @@ void Dlx::initLinks(const vvb& matrix) {
     colnHeaders[0] = thisHead;
 
     // create and link all column headers
-    for (ui i = 1; i < COLNS; ++i) {
-        node tmpHead = new link();
+    for (ui i = 1; i < colns; ++i) {
+        node tmpHead = new Link();
         tmpHead->name = i;
         tmpHead->size = 0;
         thisHead->right = tmpHead;
@@ -47,17 +46,17 @@ void Dlx::initLinks(const vvb& matrix) {
         colnHeaders[i] = thisHead;
     }
 
-    colnHeaders[COLNS-1]->right = root;
-    root->left = colnHeaders[COLNS-1];
+    colnHeaders[colns - 1]->right = root;
+    root->left = colnHeaders[colns - 1];
 
     // store immediately above and left
-    vector<node> above(COLNS);
-    vector<node> before(ROWS);
+    vector<node> above(colns);
+    vector<node> before(rows);
 
-    for (ui i = 0; i < ROWS; ++i) {
-        for (ui j = 0; j < COLNS; ++j) {
-            if (matrix[i][j]) {
-                node tmpRow = new link();
+    for (ui i = 0; i < rows; ++i) {
+        for (ui j = 0; j < colns; ++j) {
+            if (prbm->get(i, j)) {
+                node tmpRow = new Link();
                 tmpRow->name = i;
                 tmpRow->coln = colnHeaders[j];
                 ++tmpRow->coln->size;
@@ -83,13 +82,13 @@ void Dlx::initLinks(const vvb& matrix) {
     }
 
     // make colns circular
-    for (ui i = 0; i < COLNS; ++i) {
+    for (ui i = 0; i < colns; ++i) {
         colnHeaders[i]->up = above[i];
         above[i]->down = colnHeaders[i];
     }
 
     // make rows circular
-    for (ui i = 0; i < ROWS; ++i) {
+    for (ui i = 0; i < rows; ++i) {
         node f_row = before[i];
 
         while (f_row->left)
@@ -190,7 +189,7 @@ void Dlx::search(ui k) {
 
 
 void Dlx::printSolution() {
-    puzzle->printSolution(solution);
+    prbm->printSolution(solution);
 }
 
 
@@ -214,9 +213,9 @@ void Dlx::uncoverColns(vector<ui> colns) {
 
 void Dlx::solve() {
 
-    if (puzzleInstance.size() == puzzle->getCells()) {
-        // solve the puzzle
-        vector<ui> v = puzzle->colnsToCover();
+    if (puzzle.size() == prbm->getCells()) {
+        // solve the prbm
+        vector<ui> v = prbm->colnsToCover();
 
         coverColns(v);
         search(0);

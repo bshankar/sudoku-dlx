@@ -1,5 +1,6 @@
-CFLAGS="-Wall -Wextra -Wuninitialized -O2 -flto"
-LDFLAGS="-Wl -flto"
+WARNINGS += -Wall -Wextra
+CFLAGS = $(WARNINGS) -O2 -march=native
+LDFLAGS = -flto
 
-: foreach src/*.cpp src/solvers/*.cpp src/problems/*.cpp |> g++ $CFLAGS -c %f -o %o |> build/obj/%B.o
-: build/obj/*.o |> g++ $LDFLAGS %f -o %o |> build/Sudoku
+: foreach src/*.cpp src/solvers/*.cpp src/solvers/Dlx/*.cpp src/problems/*.cpp src/problems/Sudoku/*.cpp |> g++ -c %f -o %o $(CFLAGS) |> build/obj/%B.o
+: build/obj/*.o |> g++ %f -o %o $(LDFLAGS) |> build/Sudoku
