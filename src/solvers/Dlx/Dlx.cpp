@@ -1,19 +1,8 @@
 #include "Dlx.h"
 
 
-Dlx::Dlx(Problem *prbm) {
-    this->prbm = prbm;
-    this->puzzle = "";
-    solution.resize(INFTY);
-    initLinks();
-    prbm->setPuzzle(puzzle);
-}
-
-
-Dlx::Dlx(Problem *prbm, string puzzle) {
-
-    this->prbm = prbm;
-    this->puzzle = puzzle;
+Dlx::Dlx(Problem *prbm, string puzzle) : prbm(prbm),
+    puzzle(puzzle) {
     solution.resize(INFTY);
     initLinks();
     prbm->setPuzzle(puzzle);

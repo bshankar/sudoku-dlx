@@ -10,8 +10,7 @@
 
 class Dlx {
 public:
-    Dlx(Problem *prb);
-    Dlx(Problem *prb, string puzzle);
+    Dlx(Problem *prb, string puzzle = "");
     void initLinks();
     ~Dlx();
 
