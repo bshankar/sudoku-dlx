@@ -46,7 +46,11 @@ void Sudoku::printSolution(vector<node> nodes) {
         sol[pos] = value;
         ++i;
     }
-    cout << sol << endl;
+
+    // print the solution
+    for (ui j = 0; j < getCells(); ++j)
+        cout << sol[j];
+    cout << endl;
 }
 
 

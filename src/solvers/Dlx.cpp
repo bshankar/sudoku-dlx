@@ -230,15 +230,15 @@ void Dlx::solve() {
 
 Dlx::~Dlx() {
     // delete the data structure
-    for (us i = 0; i < colnHeaders.size(); ++i) {
-        node r = colnHeaders[i]->down;
-        node tmp = r->down;
-        while (r != colnHeaders[i]) {
-            delete r;
-            r = tmp;
-            tmp = tmp->down;
-        }
-        delete tmp;
-    }
-    delete root;
+    /* for (us i = 0; i < colnHeaders.size(); ++i) { */
+    /*     node r = colnHeaders[i]->down; */
+    /*     node tmp = r->down; */
+    /*     while (r != colnHeaders[i]) { */
+    /*         delete r; */
+    /*         r = tmp; */
+    /*         tmp = tmp->down; */
+    /*     } */
+    /*     delete tmp; */
+    /* } */
+    /* delete root; */
 }

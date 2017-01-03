@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-    SudokuX sudokux(3);
+    SudokuX sudokux(6);
     if (argc == 2) {
         string puzzle = argv[1];
         Dlx dlx(&sudokux, puzzle);

@@ -1,5 +1,6 @@
-#include "Windoku.h"
+/* #include "Windoku.h" */
 
 
-Windoku::Windoku(ui n) : Sudoku(n) {
-}
+/* Windoku::Windoku(ui n) : Sudoku(n) { */
+
+/* } */
