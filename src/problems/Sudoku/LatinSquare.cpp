@@ -1,13 +1,34 @@
 
 #include "LatinSquare.h"
+#include "../../utils/factorize.h"
 #include <string.h>
 
 
-LatinSquare::LatinSquare(ui n) {
-    digits = n;
+LatinSquare::LatinSquare(ui n, uint64_t extraRegions)
+    : extraRegions(extraRegions) {
+    this->digits = n;
     cells = digits*digits;
     rows = cells*digits;
-    colns = 3*cells;
+    setColns();
+}
+
+
+void LatinSquare::setColns() {
+    constraintTypes = 3;
+    colns = constraintTypes*cells;
+
+    if (extraRegions) {
+        if (extraRegions & BLOCKS)
+            colns += cells;
+        if (extraRegions & DIAG)
+            colns += 2*digits;
+        if (extraRegions & CENTERDOT)
+            colns += digits;
+        if (extraRegions & ASTERISK)
+            colns += digits;
+        /* if (extraRegions & HYPER) */
+        /* colns += */
+    }
 }
 
 
@@ -17,7 +38,44 @@ vector<ui> LatinSquare::getColns(ui i) {
     ui row = cell / digits,
        coln = cell % digits;
 
-    return {cell, row*digits + value + cells, coln*digits + value + 2*cells};
+    vector<ui> colnsVec = {cell, row*digits + value + cells, coln*digits + value + 2*cells};
+
+    // add any extra constraints
+    if (extraRegions) {
+        if (extraRegions & BLOCKS) {
+            // try to add blocks (becomes sudoku)
+            ui h = factor(digits);
+            ui w = digits/h;
+
+            if (h != 1) {
+                // we can create blocks
+                ui block = w*(row / h) + coln / w;
+                colnsVec.push_back(block*digits + value + 3*cells);
+            }
+        }
+
+        if (extraRegions & DIAG) {
+            // add diagonals
+        }
+
+        if (extraRegions & CENTERDOT) {
+            // add center dots
+        }
+
+        if (extraRegions & ASTERISK) {
+            // add asterisk
+        }
+
+        if (extraRegions & PERCENT) {
+            // add percent regions
+        }
+
+        if (extraRegions & HYPER) {
+            // add Hypersudoku regions
+        }
+    }
+
+    return colnsVec;
 }
 
 

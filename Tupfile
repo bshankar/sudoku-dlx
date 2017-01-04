@@ -1,6 +1,16 @@
-WARNINGS += -Wall -Wextra
-CFLAGS = $(WARNINGS) -O2 -march=native
-LDFLAGS = -flto
+CFLAGS = -Wall -Wextra -std=c++11 -pipe
+LDFLAGS =
+    
+ifdef DEBUG
+    CFLAGS += -O0 -g
+endif
 
-: foreach src/*.cpp src/solvers/*.cpp src/solvers/Dlx/*.cpp src/problems/*.cpp src/problems/Sudoku/*.cpp |> g++ -c %f -o %o $(CFLAGS) |> build/obj/%B.o
-: build/obj/*.o |> g++ %f -o %o $(LDFLAGS) |> build/Sudoku
+ifdef RELEASE
+    CFLAGS += -O3 -march=native
+    LDFLAGS += -flto
+endif
+
+: foreach src/*.cpp src/solvers/*.cpp src/solvers/Dlx/*.cpp src/problems/*.cpp src/problems/Sudoku/*.cpp src/utils/*.cpp |> clang++ -c %f -o %o $(CFLAGS) |> obj/%B.o
+: obj/*.o |> clang++ %f -o %o $(LDFLAGS) |> Sudoku
+
+# vim: set filetype=dosini:

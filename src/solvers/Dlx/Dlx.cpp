@@ -36,6 +36,7 @@ void Dlx::initLinks() {
         colnHeaders[i] = thisHead;
     }
 
+    // make column headers circular
     colnHeaders[colns - 1]->right = root;
     root->left = colnHeaders[colns - 1];
 
