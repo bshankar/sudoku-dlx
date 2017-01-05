@@ -34,6 +34,7 @@ private:
     node root;
     vector<node> colnHeaders;
     ui minSize;
+    ui ks = 0;
 };
 
 #endif /* end of include guard: DLX_H */

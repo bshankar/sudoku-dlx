@@ -10,6 +10,10 @@ LatinSquare::LatinSquare(ui n, uint64_t extraRegions)
     cells = digits*digits;
     rows = cells*digits;
     setColns();
+
+
+    h = factor(digits);
+    w = digits/h;
 }
 
 
@@ -26,6 +30,8 @@ void LatinSquare::setColns() {
             colns += digits;
         if (extraRegions & ASTERISK)
             colns += digits;
+        if (extraRegions & PERCENT)
+            colns += 3*digits;
         /* if (extraRegions & HYPER) */
         /* colns += */
     }
@@ -39,35 +45,60 @@ vector<ui> LatinSquare::getColns(ui i) {
        coln = cell % digits;
 
     vector<ui> colnsVec = {cell, row*digits + value + cells, coln*digits + value + 2*cells};
+    ui offset = 3*cells;
 
     // add any extra constraints
     if (extraRegions) {
         if (extraRegions & BLOCKS) {
             // try to add blocks (becomes sudoku)
-            ui h = factor(digits);
-            ui w = digits/h;
 
             if (h != 1) {
                 // we can create blocks
                 ui block = w*(row / h) + coln / w;
-                colnsVec.push_back(block*digits + value + 3*cells);
+                colnsVec.push_back(block*digits + value + offset);
+                offset += cells;
             }
         }
 
         if (extraRegions & DIAG) {
-            // add diagonals
+            if (i % (digits + 1) == 0)
+                // i belongs to the diagonal
+                colnsVec.push_back(value + offset);
+            if (i % (digits - 1) == 0 && i)
+                // i belongs to the anti diagonal
+                colnsVec.push_back(digits + value + offset);
+            offset += 2*digits;
         }
 
         if (extraRegions & CENTERDOT) {
-            // add center dots
+            if (h & 1 && w & 1) {
+                // possible to create center dots
+                if (row % h == h/2 && coln % w == w/2)
+                    colnsVec.push_back(value + offset);
+                offset += digits;
+            }
         }
 
         if (extraRegions & ASTERISK) {
-            // add asterisk
         }
 
         if (extraRegions & PERCENT) {
-            // add percent regions
+            if (h != 1) {
+                if (i % (digits - 1) == 0 && i)
+                    // anti diagonal
+                    colnsVec.push_back(value + offset);
+
+                if (row && row < 1 + h && coln && coln < 1 + w)
+                    // first block
+                    colnsVec.push_back(digits + value + offset);
+
+                if (row < (digits - 1) && row >= (digits - 1 - h) &&
+                        coln < (digits - 1) && coln >= (digits - 1 - w))
+                    // 2nd block
+                    colnsVec.push_back(2*digits + value + offset);
+
+                offset += 3*digits;
+            }
         }
 
         if (extraRegions & HYPER) {
@@ -103,19 +134,35 @@ void LatinSquare::printSolution(vector<node> nodes) {
 
 vector<ui> LatinSquare::colnsToCover() {
     vector<ui> ctc;
-    for (us cell = 0; cell < cells; ++cell) {
+    for (ui i = 0; i < cells; ++i) {
 
-        if (!isEmptyCell(puzzle[cell])) {
-            us d = puzzle[cell] - '1';
+        if (!isEmptyCell(puzzle[i])) {
+            us d = puzzle[i] - '1';
 
             // indices of covered colns
-            us c1 = cell;
-            us c2 = cell/digits*digits + cells + d;
-            us c3 = cell%digits*digits + 2*cells + d;
+            us c1 = i;
+            us c2 = i/digits*digits + cells + d;
+            us c3 = i%digits*digits + 2*cells + d;
 
             ctc.push_back(c1);
             ctc.push_back(c2);
             ctc.push_back(c3);
+
+            ui offset = 3*cells;
+
+            if (extraRegions) {
+                if (extraRegions & BLOCKS) {
+                    // try to add blocks (becomes sudoku)
+
+                    if (h != 1) {
+                        // we can create blocks
+                        ui block = w*((i/digits) / h) + (i % digits) / w;
+                        ctc.push_back(block*digits + d + offset);
+                        offset += cells;
+                    }
+                }
+            }
+
         }
     }
     return ctc;

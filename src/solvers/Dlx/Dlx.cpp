@@ -96,11 +96,11 @@ node Dlx::chooseColn() {
     minSize = root->right->size;
     for (node cH = root->right; cH != root; cH = cH->right) {
 
-        if (cH->size == 1) {
-            minSize = 1;
-            minColn = cH;
-            break;
-        }
+        /* if (cH->size == 1) { */
+        /*     minSize = 1; */
+        /*     minColn = cH; */
+        /*     break; */
+        /* } */
 
         if (cH->size < minSize) {
             minColn = cH;
@@ -148,11 +148,13 @@ void Dlx::uncover(node c) {
 
 void Dlx::search(ui k) {
 
+    ++ks;
     if (solutions >= 2)
         return;
 
     if (root->right == root) {
         printSolution();
+        cout << "Recursive calls: " << ks << endl;
         ++solutions;
         return;
     }

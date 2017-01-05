@@ -2,7 +2,6 @@
 #define LATINSQUARE_H
 
 #include "../Problem.h"
-#include <map>
 
 /*
  * nxn latin squares puzzle
@@ -45,12 +44,10 @@ public:
                           GREATER = 0b100;
 
 private:
-    ui cells;
+    // no of cells, height and width of a block (if it exists)
+    ui cells, h, w;
     us constraintTypes;
     uint64_t extraRegions, extraConstraints, givenType;
-
-    // offset before this set of column constraints
-    std::map<string, ui> offsetBefore;
 };
 
 

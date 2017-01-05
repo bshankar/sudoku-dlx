@@ -6,6 +6,6 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     LatinSquare ls(9, LatinSquare::BLOCKS);
-    Dlx solver(&ls);
+    Dlx solver(&ls, argv[1]);
     solver.solve();
 }

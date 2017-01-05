@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c++11 -pipe
+CFLAGS = -pipe
 LDFLAGS =
     
 ifdef DEBUG
@@ -10,7 +10,7 @@ ifdef RELEASE
     LDFLAGS += -flto
 endif
 
-: foreach src/*.cpp src/solvers/*.cpp src/solvers/Dlx/*.cpp src/problems/*.cpp src/problems/Sudoku/*.cpp src/utils/*.cpp |> clang++ -c %f -o %o $(CFLAGS) |> obj/%B.o
-: obj/*.o |> clang++ %f -o %o $(LDFLAGS) |> Sudoku
+: foreach src/*.cpp src/solvers/*.cpp src/solvers/Dlx/*.cpp src/problems/*.cpp src/problems/Sudoku/*.cpp src/utils/*.cpp |> g++ -c %f -o %o $(CFLAGS) |> obj/%B.o
+: obj/*.o |> g++ %f -o %o $(LDFLAGS) |> Sudoku
 
 # vim: set filetype=dosini:
